@@ -2,6 +2,7 @@ package com.ali.automation.pages;
 
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -24,17 +25,5 @@ public abstract class Page {
         this.wait = new WebDriverWait(this.driver, getLongTimeIntervalSec() * 4);
         driver.manage().timeouts().implicitlyWait(getShortTimeIntervalSec(), SECONDS);
         PageFactory.initElements(driver, this);
-    }
-
-
-    @Step("Page screenshot")
-    public Page doScreenshotOfPage() {
-        captureScreenshot(driver);
-        return this;
-    }
-
-    protected void switchToDefaultContent() {
-        log.info("Switching to default content");
-        driver.switchTo().defaultContent();
     }
 }
