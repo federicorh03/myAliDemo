@@ -1,4 +1,4 @@
-package com.testngdemo.automation.parallelexecution;
+package com.ali.automation.parallelexecution;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;

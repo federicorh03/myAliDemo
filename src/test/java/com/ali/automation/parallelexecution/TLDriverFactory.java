@@ -1,4 +1,4 @@
-package com.testngdemo.automation.parallelexecution;
+package com.ali.automation.parallelexecution;
 
 /**
  * https://www.swtestacademy.com/selenium-parallel-tests-grid-junit/
@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
-import static com.testngdemo.automation.webdriver.ElementsUtil.getStandardTimeIntervalSec;
+import static com.ali.automation.webdriver.ElementsUtil.getStandardTimeIntervalSec;
 
 
 public class TLDriverFactory {

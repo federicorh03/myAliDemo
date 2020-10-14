@@ -1,15 +1,14 @@
-package com.testngdemo.automation.listeners.paralleltests;
+package com.ali.automation.listeners.paralleltests;
 
 
-import com.testngdemo.automation.parallelexecution.TLDriverFactory;
-import com.testngdemo.automation.utils.SeleniumGridConfig;
+import com.ali.automation.parallelexecution.TLDriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
 
-import static com.testngdemo.automation.utils.SeleniumGridConfig.*;
-import static com.testngdemo.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_PORT;
+import static com.ali.automation.utils.SeleniumGridConfig.*;
+import static com.ali.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_PORT;
 
 /**
  *

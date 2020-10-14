@@ -1,4 +1,4 @@
-package com.testngdemo.automation.pages;
+package com.ali.automation.pages;
 
 
 import org.openqa.selenium.WebDriver;
@@ -8,17 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.testngdemo.automation.utils.CaptureSnapshot.captureSnapshotForAllure;
-import static com.testngdemo.automation.webdriver.ElementsUtil.getLongTimeIntervalSec;
-import static com.testngdemo.automation.webdriver.ElementsUtil.getShortestTimeIntervalSec;
+import static com.ali.automation.utils.GetScreenshot.captureScreenshot;
+import static com.ali.automation.webdriver.ElementsUtil.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-/**
- * Parent page class for all clients  and for all applications' pages
- *
- * @author Eugene Polschikov
- * @date 2019-04-11
- */
 public abstract class Page {
 
     protected WebDriver driver;
@@ -29,19 +22,19 @@ public abstract class Page {
     public Page(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(this.driver, getLongTimeIntervalSec() * 4);
-        driver.manage().timeouts().implicitlyWait(getShortestTimeIntervalSec() * 2, SECONDS);
+        driver.manage().timeouts().implicitlyWait(getShortTimeIntervalSec(), SECONDS);
         PageFactory.initElements(driver, this);
     }
 
 
-    @Step("allure page screenshot")
+    @Step("Page screenshot")
     public Page doScreenshotOfPage() {
-        captureSnapshotForAllure(driver);
+        captureScreenshot(driver);
         return this;
     }
 
     protected void switchToDefaultContent() {
-        log.info("swithching back to default content , i.e moving out from frame");
+        log.info("Switching to default content");
         driver.switchTo().defaultContent();
     }
 }

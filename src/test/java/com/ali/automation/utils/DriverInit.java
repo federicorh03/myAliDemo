@@ -1,4 +1,4 @@
-package com.testngdemo.automation.utils;
+package com.ali.automation.utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,12 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 
-/**
- * Utility method for initializing driver instance
- *
- * @author Eugene Polschikov
- * @date 2019-04-11
- */
 public class DriverInit {
     private final static Logger log = LoggerFactory.getLogger(DriverInit.class);
 
@@ -39,7 +33,7 @@ public class DriverInit {
         logs.enable(LogType.PERFORMANCE, Level.ALL);
         capability.setCapability(CapabilityType.LOGGING_PREFS, logs);
         String webDriverURL = String.format("http://%s:%s/wd/hub",hubIP,hubPort) ;
-        log.info("creating driver instance on the URL :#### " + webDriverURL);
+        log.info("Creating driver instance on the URL :#### " + webDriverURL);
         driver = new RemoteWebDriver(new URL(webDriverURL), capability);
         driver.manage().window().maximize();
         return driver;

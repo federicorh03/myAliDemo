@@ -1,4 +1,4 @@
-package com.testngdemo.automation.webdriver;
+package com.ali.automation.webdriver;
 
 
 import com.google.common.base.Function;
@@ -22,15 +22,8 @@ import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.transform;
 import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
-import static com.testngdemo.automation.utils.CaptureSnapshot.captureSnapshotForAllure;
+import static com.ali.automation.utils.GetScreenshot.captureScreenshot;
 import static java.time.Duration.ofSeconds;
-
-/**
- * WebDriver operations on WebElements
- *
- * @author Eugene Polschikov
- * @date 2019-04-11
- */
 
 public class ElementsUtil {
 
@@ -78,34 +71,28 @@ public class ElementsUtil {
 
     public static void waitForElementToBeClickable(WebDriver driver, WebElement element) {
         Wait<WebDriver> wait = new WebDriverWait(driver, MEDIUM_TIME_INTERVAL_SEC);
-        log.info("waiting for element located by '{}'  becomes clickable", getLocatorOfWebElement(element));
+        log.info("Waiting for element located by '{}' to become clickable", getLocatorOfWebElement(element));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    /**
-     * wait for webelement to disappear on the page
-     *
-     * @param driver  instance
-     * @param locator 'By' locator
-     */
     public static void waitForElementNotPresent(WebDriver driver, By locator) {
         Wait<WebDriver> wait = new WebDriverWait(driver, SHORT_TIME_INTERVAL_SEC);
         wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator)));
     }
 
     public static void waitForElementWithTextNotVisible(WebDriver driver, By locator, String text) {
-        Wait<WebDriver> wait = new WebDriverWait(driver, SHORTEST_TIME_INTERVAL_SEC * 2);
+        Wait<WebDriver> wait = new WebDriverWait(driver, SHORT_TIME_INTERVAL_SEC);
         wait.until(ExpectedConditions.invisibilityOfElementWithText(locator, text));
     }
 
     public static void waitForElementNotVisible(WebDriver driver, By locator) {
-        log.info("waiting until element with locator '{}' becomes invisible ", locator.toString());
-        Wait<WebDriver> wait = new WebDriverWait(driver, SHORTEST_TIME_INTERVAL_SEC * 2);
+        log.info("Waiting until element with locator '{}' becomes invisible", locator.toString());
+        Wait<WebDriver> wait = new WebDriverWait(driver, SHORT_TIME_INTERVAL_SEC);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
     public static void waitForElementNotVisible(WebDriver driver, WebElement webElement) {
-        Wait<WebDriver> wait = new WebDriverWait(driver, SHORTEST_TIME_INTERVAL_SEC * 2);
+        Wait<WebDriver> wait = new WebDriverWait(driver, SHORT_TIME_INTERVAL_SEC);
         wait.until(ExpectedConditions.invisibilityOf(webElement));
     }
 
@@ -145,10 +132,10 @@ public class ElementsUtil {
     }
 
     public static void waitForWebElementListBecomesVisible(WebDriver driver, By locator) {
-        log.info("awaiting for webelement list isolated by locator {} becomes visible on the page {}", locator.toString(), driver.getCurrentUrl());
-        List<WebElement> webElements = new WebDriverWait(driver, MEDIUM_TIME_INTERVAL_SEC * 3).
+        log.info("Waiting for webelement list isolated by locator {} to become visible on the page {}", locator.toString(), driver.getCurrentUrl());
+        List<WebElement> webElements = new WebDriverWait(driver, LONG_TIME_INTERVAL_SEC).
                 until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
-        log.info("webelements list size is  {}", webElements.size());
+        log.info("Webelements list size is  {}", webElements.size());
     }
 
     public static void waitForListOfElementsToBeVisibleOnThePage(WebDriver driver, By selector) {
@@ -163,14 +150,14 @@ public class ElementsUtil {
                 sleepUninterruptibly(getShortestTimeIntervalSec(), TimeUnit.MILLISECONDS);
                 break;
             } catch (WebDriverException e) {
-                log.error("error when waiting for some elements", e.getMessage(), e);
+                log.error("Error while waiting for some elements", e.getMessage(), e);
             }
             attempts++;
         }
-        Assert.assertTrue((listNotEmpty && elementList != null), "oops,  was unable to find elements on the page " + driver.getCurrentUrl() +
-                " By selector:" + selector);
+        Assert.assertTrue((listNotEmpty && elementList != null), "Unable to find elements on the page " + driver.getCurrentUrl() +
+                " By selector: " + selector);
 
-        log.info("waiting for every element in the list to become visible");
+        log.info("Waiting for every element in the list to become visible");
         for (WebElement iterator : elementList) {
             waitForElementGetsVisible(driver, iterator);
         }
@@ -192,7 +179,7 @@ public class ElementsUtil {
                 result = true;
                 break;
             } catch (StaleElementReferenceException e) {
-                log.error("stale element excception caught!", e.getMessage(), e);
+                log.error("Stale element exception caught", e.getMessage(), e);
             }
             attempts++;
         }
@@ -208,7 +195,7 @@ public class ElementsUtil {
                 result = true;
                 break;
             } catch (WebDriverException e) {
-                log.error("error happened when clicking on the element", e.getMessage(), e);
+                log.error("Error happened when clicking on the element", e.getMessage(), e);
             }
             attempts++;
         }
@@ -268,7 +255,7 @@ public class ElementsUtil {
     }
 
     public static void moveToElementActionbuilder(WebDriver driver, WebElement element) {
-        log.info("moving to set the focus on webelement {}", element);
+        log.info("Moving to set the focus on webelement {}", element);
         Actions actions = new Actions(driver);
         actions.moveToElement(element);
         actions.build().perform();
@@ -326,29 +313,29 @@ public class ElementsUtil {
      * @param button              to click to make dropdown options appear
      * @param dynamicListOfValues dropdown options
      */
-    @Step("selecting DDL option in a random way (NOTE: with NO DDL options validation)")
+    @Step("Selecting DDL option in a random way (NOTE: with NO DDL options validation)")
     public static void ulListRandomizer(WebDriver driver, WebElement button, List<WebElement> dynamicListOfValues) {
 
         dropdownListButtonClickWithRetries(driver, button, dynamicListOfValues);
-        captureSnapshotForAllure(driver);
+        captureScreenshot(driver);
         dynamicListOfValues.get(ThreadLocalRandom.current().nextInt(MINIMUM_DOPRODOWNLIST_INDEX_TO_START_SELECTION_WITH, dynamicListOfValues.size())).click();
         waitForPageLoaded(driver);
         sleepUninterruptibly(getShortestTimeIntervalSec() / 2, TimeUnit.MILLISECONDS);
     }
 
-    @Step("selecting DDL option in a random way (NOTE: with NO DDL options validation)")
+    @Step("Selecting DDL option in a random way (NOTE: with NO DDL options validation)")
     public static void ulListRandomizer(WebDriver driver, WebElement button, List<WebElement> dynamicListOfValues,
                                         String textToSelect) {
 
         dropdownListButtonClickWithRetries(driver, button, dynamicListOfValues);
-        captureSnapshotForAllure(driver);
+        captureScreenshot(driver);
         Function<WebElement, String> getText = (WebElement w) -> w.getText().trim();
 
 
         int indexToClick = transform(dynamicListOfValues, getText).indexOf(textToSelect);
         // soft assert, i.e if no of this element, then we'll be picking up random from dropdown
         if (indexToClick < 0) {
-            log.warn("ooops, there is no '" + textToSelect + "' element among DDL options: " + transform(dynamicListOfValues, getText).toString());
+            log.warn("There's no '" + textToSelect + "' element among DDL options: " + transform(dynamicListOfValues, getText).toString());
             dynamicListOfValues.get(ThreadLocalRandom.current().nextInt(MINIMUM_DOPRODOWNLIST_INDEX_TO_START_SELECTION_WITH, dynamicListOfValues.size())).click();
         } else {
             dynamicListOfValues.get(indexToClick).click();
@@ -357,24 +344,24 @@ public class ElementsUtil {
     }
 
 
-    @Step("selecting multi-option dropdown")
+    @Step("Selecting multi-option dropdown")
     public static void selectAllMultiOptions(WebDriver driver, WebElement button, List<WebElement> multiOptionList){
-        log.info("clicking on the button to make option list appear");
+        log.info("Clicking on the button to make option list appear");
         button.click();
-        log.info("selecting all options in dropdown list");
+        log.info("Selecting all options in dropdown list");
         try {
             for (WebElement iter : multiOptionList) {
                 jsScrollIntoView(driver,iter);
                 iter.click();
             }
-            captureSnapshotForAllure(driver);
+            captureScreenshot(driver);
         } catch (WebDriverException e) {
-            log.info("ooops some error occured during group selection");
+            log.info("An error occurred during group selection");
             log.info(e.getMessage(), e);
         }
-        log.info("clicking on same button to make popup disappear");
+        log.info("Clicking on the same button to make popup disappear");
         button.click();
-        captureSnapshotForAllure(driver);
+        captureScreenshot(driver);
     }
 
 
@@ -388,12 +375,12 @@ public class ElementsUtil {
      * @param dynamicListOfValues dropdown options appeared
      * @param expectedOptions     expected dropdown options
      */
-    @Step("selecting DDL option in a random way with validation of all DDL options")
+    @Step("Selecting DDL option in a random way with validation of all DDL options")
     public static void ddlOptionsVerifyAndRandomPickup(SoftAssert softAssertion, WebDriver driver, WebElement button,
                                                        List<WebElement> dynamicListOfValues, String[] expectedOptions) {
 
         dropdownListButtonClickWithRetries(driver, button, dynamicListOfValues);
-        captureSnapshotForAllure(driver);
+        captureScreenshot(driver);
         Function<WebElement, String> getElemsText = (WebElement w) -> w.getText().trim();
         Set<String> actual = transform(dynamicListOfValues, getElemsText).stream().collect(Collectors.toSet());
         Set<String> expected = new HashSet<>(Arrays.asList(expectedOptions));
@@ -406,7 +393,7 @@ public class ElementsUtil {
         // analyzing difference between actual and expected dropdown options
         actual.removeAll(expected);
         softAssertion.assertEquals(actual.size(), 0,
-                String.format("Page: %s \n Oops, actual DDL options number is different from expected ones. ###Actual: %s #####   Expected: %s  #####.   'Actual - Expected' DIFF: '%s'",
+                String.format("Page: %s \n Actual DDL options number is different from expected ones. ###Actual: %s #####   Expected: %s  #####.   'Actual - Expected' DIFF: '%s'",
                         driver.getCurrentUrl(), actualStringified, expectedStringified, Arrays.toString(actual.toArray())));
 
         dynamicListOfValues.get(ThreadLocalRandom.current().nextInt(MINIMUM_DOPRODOWNLIST_INDEX_TO_START_SELECTION_WITH, dynamicListOfValues.size())).click();
@@ -423,7 +410,7 @@ public class ElementsUtil {
      * @param dynamicListOfValues dropdown options appeared
      * @param expectedOptions     expected dropdown options
      */
-    @Step("selecting DDL option in a random way with validation of all DDL options")
+    @Step("Selecting DDL option in a random way with validation of all DDL options")
     public static void ddlOptionsVerifyAndSpecificOptionPickup(SoftAssert softAssertion, WebDriver driver, WebElement button,
                                                                List<WebElement> dynamicListOfValues, String[] expectedOptions, String optionToSelect) {
 
@@ -441,29 +428,29 @@ public class ElementsUtil {
         // analyzing difference between actual and expected dropdown options
         actual.removeAll(expected);
         softAssertion.assertEquals(actual.size(), 0,
-                String.format("Page: %s \n Oops, actual DDL options number is different from expected ones. ###Actual: %s #####   Expected: %s  #####.   'Actual - Expected' DIFF: '%s'",
+                String.format("Page: %s \n Actual DDL options number is different from expected ones. ###Actual: %s #####   Expected: %s  #####.   'Actual - Expected' DIFF: '%s'",
                         driver.getCurrentUrl(), actualStringified, expectedStringified, Arrays.toString(actual.toArray())));
         ulListRandomizer(driver,button,dynamicListOfValues,optionToSelect);
     }
 
     /**
-     * Utility method serving for clickin dropdown button with retries attempts
+     * Utility method serving for clicking dropdown button with retries attempts
      *
      * @param driver              instance
      * @param button              to click
      * @param dynamicListOfValues dropdown options appeared
      */
-    @Step("clicking several times on dropdown button with retries")
+    @Step("Clicking several times on dropdown button with retries")
     private static void dropdownListButtonClickWithRetries(WebDriver driver, WebElement button, List<WebElement> dynamicListOfValues) {
         int attempts = 0;
         while (attempts < ATTEMPTS_NUMBER_TO_RETRY) {
             try {
-                log.info("clicking on ddl button {} time", String.valueOf(attempts + 1));
+                log.info("Clicking on DDL button {} time/s", String.valueOf(attempts + 1));
                 button.click();
                 sleepUninterruptibly(getShortestTimeIntervalSec() / 2, TimeUnit.MILLISECONDS);
 
                 if (dynamicListOfValues.size() > 0)
-                    log.info("list of DDL options is not empty");
+                    log.info("List of DDL options is not empty");
                 fluentWait(driver, dynamicListOfValues.get(dynamicListOfValues.size() - 1));
                 break;
             } catch (WebDriverException e) {
@@ -476,16 +463,16 @@ public class ElementsUtil {
 
     /**
      * @param driver       instance
-     * @param titlePattern URL pattern pattern (occurrency)
+     * @param titlePattern URL pattern pattern (occurrence)
      */
     public static void waitTillPageUrlChanges(WebDriver driver, String titlePattern) {
-        log.info("waiting {} seconds until page URL contains {}", LONG_TIME_INTERVAL_SEC, titlePattern);
+        log.info("Waiting {} seconds until page URL contains {}", LONG_TIME_INTERVAL_SEC, titlePattern);
         WebDriverWait wait = new WebDriverWait(driver, LONG_TIME_INTERVAL_SEC);
         wait.until(ExpectedConditions.urlContains(titlePattern));
     }
 
     public static void waitTillPageUrlChanges(WebDriver driver, String titlePattern, int extendedTimeout) {
-        log.info("waiting {} seconds until page URL contains {}", extendedTimeout, titlePattern);
+        log.info("Waiting {} seconds until page URL contains {}", extendedTimeout, titlePattern);
         WebDriverWait wait = new WebDriverWait(driver, extendedTimeout);
         wait.until(ExpectedConditions.urlContains(titlePattern));
     }

@@ -1,6 +1,6 @@
-package com.testngdemo.automation.listeners.paralleltests;
+package com.ali.automation.listeners.paralleltests;
 
-import com.testngdemo.automation.parallelexecution.TLDriverFactory;
+import com.ali.automation.parallelexecution.TLDriverFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.logging.Level;
 
-import static com.testngdemo.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_IP;
-import static com.testngdemo.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_PORT;
+import static com.ali.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_IP;
+import static com.ali.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_PORT;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.testngdemo.automation.utils;
+package com.ali.automation.utils;
 
 public class SeleniumGridConfig {
     public final static String SELENIUM_GRID_HUB_IP = "localhost";
