@@ -7,8 +7,8 @@ import org.openqa.selenium.WebElement;
 import static com.ali.automation.utils.ClosePopUp.closeFirstPopUp;
 import static com.ali.automation.webdriver.ElementsUtil.waitForPageLoaded;
 
-public class AliHomePage extends Page {
-    public AliHomePage(WebDriver driver) {
+public class HomePage extends Page {
+    public HomePage(WebDriver driver) {
         super(driver);
     }
 
@@ -25,11 +25,11 @@ public class AliHomePage extends Page {
         closeFirstPopUp(driver, popUpClose);
     }
 
-    public AliResultsPage searchText(String text) {
+    public ResultsPage searchText(String text) {
         log.info("Searching for text \"" + text + "\"");
         searchBarInput.sendKeys(text);
         searchBarButton.click();
-        return new AliResultsPage(driver);
+        return new ResultsPage(driver);
     }
 
 }
