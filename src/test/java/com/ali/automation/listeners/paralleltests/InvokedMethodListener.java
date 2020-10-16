@@ -10,9 +10,7 @@ import org.testng.ITestResult;
 import static com.ali.automation.utils.SeleniumGridConfig.*;
 import static com.ali.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_PORT;
 
-/**
- *
- */
+
 public class InvokedMethodListener implements IInvokedMethodListener {
     @Override
     public void beforeInvocation(IInvokedMethod method, ITestResult testResult) {

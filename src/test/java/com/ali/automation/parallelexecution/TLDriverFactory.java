@@ -1,11 +1,6 @@
 package com.ali.automation.parallelexecution;
 
-/**
- * https://www.swtestacademy.com/selenium-parallel-tests-grid-junit/
- * https://www.swtestacademy.com/selenium-parallel-tests-grid-testng/
- * <p>
- * Paralleling tests execution in browsers: chrome, Firefox
- */
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -24,16 +19,16 @@ public class TLDriverFactory {
 
     public static synchronized void setDriver(String browser,String hubIP, String hubPort) {
         String webDriverURL = String.format("http://%s:%s/wd/hub", hubIP, hubPort);
-        log.info("creating driver instance on the runnning GRID INFRA: {}#### ", webDriverURL);
+        log.info("Creating driver instance on the running GRID INFRA: {}#### ", webDriverURL);
         if (browser.equals("firefox")) {
-            log.info("setting driver instance specifically for firefox");
+            log.info("Setting driver instance specifically for Firefox");
             try {
                 tlDriver.set(new RemoteWebDriver(new URL(webDriverURL), optionsManager.getFirefoxOptions()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         } else if (browser.equals("chrome")) {
-            log.info("setting driver instance specifically for chrome");
+            log.info("Setting driver instance specifically for Chrome");
             try {
                 tlDriver.set(new RemoteWebDriver(new URL(webDriverURL), optionsManager.getChromeOptions()));
             } catch (MalformedURLException e) {

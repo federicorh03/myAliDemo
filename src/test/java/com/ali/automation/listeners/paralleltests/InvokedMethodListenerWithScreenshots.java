@@ -20,9 +20,7 @@ import java.util.logging.Level;
 import static com.ali.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_IP;
 import static com.ali.automation.utils.SeleniumGridConfig.SELENIUM_GRID_HUB_PORT;
 
-/**
- *
- */
+
 public class InvokedMethodListenerWithScreenshots implements IInvokedMethodListener {
     @Override
     public void beforeInvocation(IInvokedMethod method, ITestResult testResult) {
@@ -45,7 +43,7 @@ public class InvokedMethodListenerWithScreenshots implements IInvokedMethodListe
             try {
                 driver.close();
             } catch (WebDriverException e) {
-                System.out.println("#### oops, seems driver instance have been already closed." + e.getMessage() + Arrays.toString(e.getStackTrace()));
+                System.out.println("It seems the driver instance was already closed." + e.getMessage() + Arrays.toString(e.getStackTrace()));
             }
         }
     }

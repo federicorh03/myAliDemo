@@ -10,13 +10,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.logging.Level;
 
-/**
- * https://www.swtestacademy.com/selenium-parallel-tests-grid-junit/
- * https://www.swtestacademy.com/selenium-parallel-tests-grid-testng/
- * Paralleling test execution in different browsers
- *
- * @author created by Eugene Polschikov on 2019-04-11
- */
+
 public class OptionsManager {
 
     //Get Chrome Options

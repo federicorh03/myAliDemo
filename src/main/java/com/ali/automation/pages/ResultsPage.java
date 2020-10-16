@@ -14,17 +14,18 @@ public class ResultsPage extends Page{
     }
 
     private final static String dialogCloseClass = "next-dialog-close";
-    private final static String productAdCSSByIndex = ".list-item [product-index=number]";
+    private final static String productAdTitleCSSByIndex = ".list-item [product-index=number] a.item-title";
 
-    private WebElement dialogCloseButton = driver.findElement(By.className(dialogCloseClass));
+    private final WebElement dialogCloseButton = driver.findElement(By.className(dialogCloseClass));
 
     public void preparePage() {
         waitForPageLoaded(driver);
         closeFirstPopUp(driver, dialogCloseButton);
     }
 
-    public ProductPage selectProductByIndex(String index) {
-        WebElement productAd = driver.findElement(By.cssSelector(productAdCSSByIndex.replace("number", index)));
+    public ProductPage selectProductByIndex(int productIndex) {
+        String index = Integer.toString(productIndex-1);
+        WebElement productAd = driver.findElement(By.cssSelector(productAdTitleCSSByIndex.replace("number", index)));
 
         waitForElementToBeClickable(driver, productAd);
         productAd.click();

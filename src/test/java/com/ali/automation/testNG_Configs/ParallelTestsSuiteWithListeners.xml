@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parallel testNG tests suite for demo purposes" parallel="tests" thread-count="2" verbose="8">
+    <listeners>
+        <listener class-name="com.ali.automation.listeners.paralleltests.InvokedMethodListenerWithScreenshots"/>
+        <listener class-name="com.ali.automation.listeners.retrymechanism.RetryListener"/>
+    </listeners>
+
+    <test name="first thread in parallel execution" parallel="methods" thread-count="1">
+        <parameter name="browser" value="chrome"/>
+        <groups>
+            <run>
+                <include name="SMOKE.SUITE"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.ali.automation.functional.VerifyProductAvailabilityTest"/>
+        </classes>
+    </test>
+
+</suite>
