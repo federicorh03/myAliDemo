@@ -4,8 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static com.ali.automation.utils.ClosePopUp.closeFirstPopUp;
-import static com.ali.automation.webdriver.ElementsUtil.waitForPageLoaded;
+import static com.ali.automation.utils.ClosePopUp.closePopUp;
+import static com.ali.automation.webdriver.ElementsUtil.*;
 
 public class HomePage extends Page {
     public HomePage(WebDriver driver) {
@@ -15,18 +15,22 @@ public class HomePage extends Page {
     private final static String popUpCloseXpath = "(//img[@class='rax-image '])[2]";
     private final static String searchBarInputId = "search-key";
     private final static String searchBarButtonClass = "search-button";
-
-    private WebElement popUpClose = driver.findElement(By.xpath(popUpCloseXpath));
-    private WebElement searchBarInput = driver.findElement(By.id(searchBarInputId));
-    private WebElement searchBarButton = driver.findElement(By.className(searchBarButtonClass));
+    private final static String popUpFrameCSS = "iframe[src*=\"campaign\"]";
 
     public void preparePage() {
         waitForPageLoaded(driver);
-        closeFirstPopUp(driver, popUpClose);
+        waitForFrameToBeAvailableAndSwitchToIt(driver, By.cssSelector(popUpFrameCSS));
+        log.info("Waiting for popup to appear");
+        fluentWait(driver, By.xpath(popUpCloseXpath), 10);
+        WebElement popUpClose = driver.findElement(By.xpath(popUpCloseXpath));
+        closePopUp(driver, popUpClose);
     }
 
     public ResultsPage searchText(String text) {
-        log.info("Searching for text \"" + text + "\"");
+        WebElement searchBarInput = driver.findElement(By.id(searchBarInputId));
+        WebElement searchBarButton = driver.findElement(By.className(searchBarButtonClass));
+
+        log.info("Searching for text \"{}\"", text);
         searchBarInput.sendKeys(text);
         searchBarButton.click();
         return new ResultsPage(driver);

@@ -7,6 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ali.automation.utils.Scrolling.scrollToBottom;
+import static com.ali.automation.webdriver.ElementsUtil.waitForElementGetsVisible;
+
 public class Pagination {
     private final static Logger log = LoggerFactory.getLogger(com.ali.automation.utils.Pagination.class);
 
@@ -16,7 +19,7 @@ public class Pagination {
     private final static String goToPageInputClass = "next-large";
     private final static String gotToPageButtonClass = "jump-btn";
 
-    public ResultsPage goToPreviousPage(WebDriver driver) {
+    public static ResultsPage goToPreviousPage(WebDriver driver) {
         WebElement previousButton = driver.findElement(By.cssSelector(previousButtonCSS));
 
         if (previousButton.getAttribute("disabled") == null) {
@@ -27,7 +30,7 @@ public class Pagination {
         return new ResultsPage(driver);
     }
 
-    public ResultsPage goToNextPage(WebDriver driver) {
+    public static ResultsPage goToNextPage(WebDriver driver) {
         WebElement nextButton = driver.findElement(By.cssSelector(nextButtonCSS));
 
         if (nextButton.getAttribute("disabled") == null) {
@@ -38,7 +41,7 @@ public class Pagination {
         return new ResultsPage(driver);
     }
 
-    public ResultsPage goToPageNumber(WebDriver driver, Integer destPageNumber) {
+    public static ResultsPage goToPageNumber(WebDriver driver, Integer destPageNumber) {
         int pagesQty = driver.findElements(By.className(pagesListClass)).size();
         WebElement pageInput = driver.findElement(By.className(goToPageInputClass));
         WebElement goButton = driver.findElement(By.className(gotToPageButtonClass));
