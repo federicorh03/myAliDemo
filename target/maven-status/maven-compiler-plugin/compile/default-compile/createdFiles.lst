@@ -1,0 +1,8 @@
+com\ali\automation\pages\Page.class
+com\ali\automation\pages\ResultsPage.class
+com\ali\automation\utils\Scrolling.class
+com\ali\automation\utils\ClosePopUp.class
+com\ali\automation\pages\ProductPage.class
+com\ali\automation\pages\HomePage.class
+com\ali\automation\webdriver\ElementsUtil.class
+com\ali\automation\utils\Pagination.class

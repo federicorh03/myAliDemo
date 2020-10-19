@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
-import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.transform;
 import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
-import static com.ali.automation.utils.GetScreenshot.captureScreenshot;
 import static java.time.Duration.ofSeconds;
 
 public class ElementsUtil {
@@ -40,10 +38,21 @@ public class ElementsUtil {
     private final static int LONG_TIME_INTERVAL_SEC = 15;
 
 
-    public static void waitForPageLoaded(WebDriver driver) {
+    /*public static void waitForPageLoaded(WebDriver driver) {
         ExpectedCondition<Boolean> expectation = driver1 -> ((JavascriptExecutor) driver1).executeScript("return document.readyState").equals("complete");
         Wait<WebDriver> wait = new WebDriverWait(driver, LONG_TIME_INTERVAL_SEC);
         wait.until(expectation);
+    }*/
+
+    public static void waitForPageLoaded(WebDriver driver) {
+        ExpectedCondition<Boolean> expectation = driver1 -> ((JavascriptExecutor) driver1).executeScript("return document.readyState").toString().equals("complete");
+        try {
+            Thread.sleep(1000);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_TIME_INTERVAL_SEC);
+            wait.until(expectation);
+        } catch (Throwable error) {
+            Assert.fail("Timeout waiting for Page Load Request to complete.");
+        }
     }
 
     public static boolean waitForPageJQueryRendered(WebDriver webDriver) {
@@ -128,6 +137,7 @@ public class ElementsUtil {
     }
 
     public static void waitForElementGetsVisible(WebDriver driver, WebElement element) {
+        log.info("Waiting for webelement by locator {} to become visible", getLocatorOfWebElement(element).toString());
         new WebDriverWait(driver, MEDIUM_TIME_INTERVAL_SEC).until(ExpectedConditions.visibilityOf(element));
     }
 
@@ -313,22 +323,18 @@ public class ElementsUtil {
      * @param button              to click to make dropdown options appear
      * @param dynamicListOfValues dropdown options
      */
-    @Step("Selecting DDL option in a random way (NOTE: with NO DDL options validation)")
     public static void ulListRandomizer(WebDriver driver, WebElement button, List<WebElement> dynamicListOfValues) {
 
         dropdownListButtonClickWithRetries(driver, button, dynamicListOfValues);
-        captureScreenshot(driver);
         dynamicListOfValues.get(ThreadLocalRandom.current().nextInt(MINIMUM_DOPRODOWNLIST_INDEX_TO_START_SELECTION_WITH, dynamicListOfValues.size())).click();
         waitForPageLoaded(driver);
         sleepUninterruptibly(getShortestTimeIntervalSec() / 2, TimeUnit.MILLISECONDS);
     }
 
-    @Step("Selecting DDL option in a random way (NOTE: with NO DDL options validation)")
     public static void ulListRandomizer(WebDriver driver, WebElement button, List<WebElement> dynamicListOfValues,
                                         String textToSelect) {
 
         dropdownListButtonClickWithRetries(driver, button, dynamicListOfValues);
-        captureScreenshot(driver);
         Function<WebElement, String> getText = (WebElement w) -> w.getText().trim();
 
 
@@ -344,7 +350,6 @@ public class ElementsUtil {
     }
 
 
-    @Step("Selecting multi-option dropdown")
     public static void selectAllMultiOptions(WebDriver driver, WebElement button, List<WebElement> multiOptionList){
         log.info("Clicking on the button to make option list appear");
         button.click();
@@ -354,14 +359,12 @@ public class ElementsUtil {
                 jsScrollIntoView(driver,iter);
                 iter.click();
             }
-            captureScreenshot(driver);
         } catch (WebDriverException e) {
             log.info("An error occurred during group selection");
             log.info(e.getMessage(), e);
         }
         log.info("Clicking on the same button to make popup disappear");
         button.click();
-        captureScreenshot(driver);
     }
 
 
@@ -375,12 +378,10 @@ public class ElementsUtil {
      * @param dynamicListOfValues dropdown options appeared
      * @param expectedOptions     expected dropdown options
      */
-    @Step("Selecting DDL option in a random way with validation of all DDL options")
     public static void ddlOptionsVerifyAndRandomPickup(SoftAssert softAssertion, WebDriver driver, WebElement button,
                                                        List<WebElement> dynamicListOfValues, String[] expectedOptions) {
 
         dropdownListButtonClickWithRetries(driver, button, dynamicListOfValues);
-        captureScreenshot(driver);
         Function<WebElement, String> getElemsText = (WebElement w) -> w.getText().trim();
         Set<String> actual = transform(dynamicListOfValues, getElemsText).stream().collect(Collectors.toSet());
         Set<String> expected = new HashSet<>(Arrays.asList(expectedOptions));
@@ -410,7 +411,6 @@ public class ElementsUtil {
      * @param dynamicListOfValues dropdown options appeared
      * @param expectedOptions     expected dropdown options
      */
-    @Step("Selecting DDL option in a random way with validation of all DDL options")
     public static void ddlOptionsVerifyAndSpecificOptionPickup(SoftAssert softAssertion, WebDriver driver, WebElement button,
                                                                List<WebElement> dynamicListOfValues, String[] expectedOptions, String optionToSelect) {
 
@@ -440,7 +440,6 @@ public class ElementsUtil {
      * @param button              to click
      * @param dynamicListOfValues dropdown options appeared
      */
-    @Step("Clicking several times on dropdown button with retries")
     private static void dropdownListButtonClickWithRetries(WebDriver driver, WebElement button, List<WebElement> dynamicListOfValues) {
         int attempts = 0;
         while (attempts < ATTEMPTS_NUMBER_TO_RETRY) {

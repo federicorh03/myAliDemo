@@ -29,8 +29,6 @@
         <opencsv.version>2.3</opencsv.version>
         <javaxmail.version>1.5.2</javaxmail.version>
         <guava.version>21.0</guava.version>
-        <allure.version>1.5.2</allure.version>
-        <yandexallure.latest.version>2.2</yandexallure.latest.version>
         <aspectj.version>1.8.10</aspectj.version>
 
         <testng.suite.name>property from commandline</testng.suite.name>
@@ -95,26 +93,6 @@
 
 
         <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-testng-adaptor</artifactId>
-            <version>${allure.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-maven-plugin</artifactId>
-            <version>${yandexallure.latest.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-
-        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
@@ -132,6 +110,17 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
 
     </dependencies>
 
@@ -192,17 +181,9 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.18.1</version>
+                    <version>2.19.1</version>
                     <configuration>
                         <testFailureIgnore>false</testFailureIgnore>
-                        <argLine>
-                            -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
-                        </argLine>
-                        <suiteXmlFiles>
-                            <suiteXmlFile>
-                                src/test/java/com/ali/automation/testNG_Configs/${testng.suite.name}.xml
-                            </suiteXmlFile>
-                        </suiteXmlFiles>
                     </configuration>
                     <dependencies>
                         <dependency>
