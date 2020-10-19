@@ -38,10 +38,21 @@ public class ElementsUtil {
     private final static int LONG_TIME_INTERVAL_SEC = 15;
 
 
-    public static void waitForPageLoaded(WebDriver driver) {
+    /*public static void waitForPageLoaded(WebDriver driver) {
         ExpectedCondition<Boolean> expectation = driver1 -> ((JavascriptExecutor) driver1).executeScript("return document.readyState").equals("complete");
         Wait<WebDriver> wait = new WebDriverWait(driver, LONG_TIME_INTERVAL_SEC);
         wait.until(expectation);
+    }*/
+
+    public static void waitForPageLoaded(WebDriver driver) {
+        ExpectedCondition<Boolean> expectation = driver1 -> ((JavascriptExecutor) driver1).executeScript("return document.readyState").toString().equals("complete");
+        try {
+            Thread.sleep(1000);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_TIME_INTERVAL_SEC);
+            wait.until(expectation);
+        } catch (Throwable error) {
+            Assert.fail("Timeout waiting for Page Load Request to complete.");
+        }
     }
 
     public static boolean waitForPageJQueryRendered(WebDriver webDriver) {

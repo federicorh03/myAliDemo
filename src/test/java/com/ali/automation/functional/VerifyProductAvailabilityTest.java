@@ -27,13 +27,9 @@ public class VerifyProductAvailabilityTest extends TestSuitesBase {
 
         int availableToBuy = productPage.getProductAvailableQuantity();
 
-        try {
-            Assert.assertTrue(availableToBuy > 0, "No more items available to buy, please select another product");
-            log.info("Test passed");
-            driver.quit();
-        }catch (Exception e){
-            log.info("Test failed");
-            driver.quit();
-        }
+        Assert.assertTrue(availableToBuy > 0, "Test failed. No more items available to buy, please select another product");
+        log.info("Test passed");
+        log.info("There are {} items available", availableToBuy);
+        driver.quit();
     }
 }

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import static com.ali.automation.utils.ClosePopUp.closePopUp;
 import static com.ali.automation.utils.Pagination.goToNextPage;
+import static com.ali.automation.utils.Scrolling.*;
 import static com.ali.automation.webdriver.ElementsUtil.*;
-import static com.ali.automation.utils.Scrolling.scrollToElement;
 
 public class ResultsPage extends Page{
     public ResultsPage(WebDriver driver) {
@@ -21,18 +21,21 @@ public class ResultsPage extends Page{
     private final static String lastProductCSS = ".list-item:last-child";
 
     public void preparePage() {
-        waitForPageLoaded(driver);
         WebElement dialogCloseButton = driver.findElement(By.className(dialogCloseClass));
         closePopUp(driver, dialogCloseButton);
     }
 
     public ResultsPage nextPage(WebDriver driver) throws InterruptedException {
+        int pixels = 13500;
         log.info("Going to next page");
-        log.info(String.valueOf(driver.findElements(By.cssSelector(".list-item")).size()));
-        while (driver.findElements(By.cssSelector(".list-item")).size()<60) {
-            Thread.sleep(5);
+        Thread.sleep(2000); //sleeping thread due to lack of better handling, must be replaced
+        WebElement productElement = driver.findElement(By.cssSelector("li > div"));
+        log.info("Handling results view as there are two possibilities. Gallery and list views");
+        if (productElement.getAttribute("class").contains("gallery")) {
+            pixels = 4000;
         }
-        scrollToElement(driver, driver.findElement(By.cssSelector(lastProductCSS)));
+        log.info("Gallery view: " + productElement.getAttribute("class").contains("gallery"));
+        scrollByPixel(driver, String.valueOf(pixels));
         goToNextPage(driver);
         return new ResultsPage(driver);
     }
@@ -45,7 +48,6 @@ public class ResultsPage extends Page{
         waitForElementToBeClickable(driver, productAdTitle);
         log.info("Selecting product #{}", productIndex);
         clickWithStaleRefHandle(driver, by);
-        //productAdTitle.click();
         ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(tabs2.get(1));
         return new ProductPage(driver);

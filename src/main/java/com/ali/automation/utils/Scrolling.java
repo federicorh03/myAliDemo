@@ -20,4 +20,11 @@ public class Scrolling {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView();", element);
     }
+
+    public static void scrollByPixel(WebDriver driver, String pixels) {
+        String javaScript = "window.scrollBy(0," + pixels + ")";
+        log.info("Scrolling {} pixels", pixels);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript(javaScript);
+    }
 }
